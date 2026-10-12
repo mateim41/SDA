@@ -34,10 +34,8 @@ void pb1()
     delete a;
     a = nullptr;
 }
-
-int main()
+void pb2()
 {
-    // pb1();
     double *vect = new double[]{5, -3.2, 1.25, 7.69, 4.21, -6.29, 11.2, 3.57, 9.99, -10.87, -2.69};
     int n = 11; // sizeof(vect) / sizeof(double);
     // InsertionSort(vect, n);
@@ -60,6 +58,11 @@ int main()
     delete vect;
     vect = nullptr;
     return 0;
+}
+int main()
+{
+    // pb1();
+    pb2();
 }
 
 void BubbleSort(int *a, int n)
