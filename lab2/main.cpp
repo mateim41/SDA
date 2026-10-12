@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <tuple>
 
 void BubbleSort(int *a, int n);
 void SelectionSort(int *a, int n);
@@ -8,6 +9,11 @@ void InsertionSort(T *a, int n);
 bool BruteForceSearch(int *a, int n, int elem);
 bool BinarySearch(int *a, int n, int elem);
 bool BinarySearchRecursive(int *a, int elem, int st, int dr);
+
+int *CreateMatrix(int &nl, int &nc);
+void DisplayElement(int *matr, int nl, int nc, int nrLin, int nrCol);
+void DisplayMatrice(int *matr, int nrLin, int nrCol);
+std::tuple<int, int> DetermineMaximumIndexes(int *matr, int nrLin, int nrCol);
 
 void pb1()
 {
@@ -31,7 +37,7 @@ void pb1()
     //     std::cout << a[i] << " ";
     // }
 
-    delete a;
+    delete[] a;
     a = nullptr;
 }
 void pb2()
@@ -55,14 +61,149 @@ void pb2()
     }
     std::cout << smax << "\n";
 
-    delete vect;
+    delete[] vect;
     vect = nullptr;
-    return 0;
+}
+void pb3()
+{
+    int nl, nc;
+    int *Matrice = CreateMatrix(nl, nc);
+    /*
+        1 2 3
+        4 5 6
+        7 8 9
+    */
+    int nrLinie, nrColoana;
+    std::cout << "Introduceti linia : ";
+    std::cin >> nrLinie;
+    std::cout << "Introduceti coloana: ";
+    std::cin >> nrColoana;
+    DisplayElement(Matrice, nl, nc, nrLinie, nrColoana);
+    std::cout << "\n";
+    DisplayMatrice(Matrice, nl, nc);
+
+    std::tuple<int, int> indiciValMaxima = DetermineMaximumIndexes(Matrice, nl, nc);
+    int linie, coloana;
+    std::tie(linie, coloana) = indiciValMaxima;
+    std::cout << linie << " " << coloana << "\n";
+
+    delete[] Matrice;
+    Matrice = nullptr;
+}
+
+// vom presupune ca matricea este alocata dinamica intr-o zona continua de memorie
+void pb4()
+{
+    int nl, nc;
+    int *Matrice = CreateMatrix(nl, nc);
+    
+
+
+    delete[] Matrice;
+    Matrice = nullptr;
 }
 int main()
 {
     // pb1();
-    pb2();
+    // pb2();
+    // pb3();
+    pb4();
+
+    return 0;
+}
+
+int *CreateMatrix(int &nl, int &nc)
+{
+    std::cout << "Introduceti nr linii: ";
+    std::cin >> nl;
+    std::cout << "Introduceti nr coloane: ";
+    std::cin >> nc;
+
+    int *Matrice = new int[nl * nc];
+    std::cout << "Introduceti elementele matricei\n";
+    int linCurenta = 0;
+    for (int i = 0; i < nc; i++)
+    {
+        std::cin >> Matrice[linCurenta * nc + i];
+        if (i == nc - 1)
+        {
+            linCurenta++;
+            i = -1; // deoarece la finalul for-ului i-ul creste si il aduce inapoi la 0
+            if (linCurenta == nl)
+                break;
+        }
+    }
+    return Matrice;
+    // pointerul Matrice se distruge dupa terminarea functiei
+    // daca as fi lasat signatura int *& as fi returnat o referinta
+    // la un pointer care s-o distrus
+}
+void DisplayElement(int *matr, int nl, int nc, int nrLin, int nrCol)
+{
+    int linCurenta = 0;
+    for (int i = 0; i < nc; i++)
+    {
+        if (linCurenta == nrLin && i == nrCol)
+        {
+            std::cout << matr[linCurenta * nc + i] << "\n";
+            break;
+        }
+        if (i == nc - 1)
+        {
+            linCurenta++;
+            i = 0;
+        }
+    }
+}
+void DisplayMatrice(int *matr, int nrLin, int nrCol)
+{
+    int linCurenta = 0;
+    for (int i = 0; i < nrLin; i++)
+    {
+        std::cout << matr[linCurenta * nrCol + i] << " ";
+        if (i == nrCol - 1)
+        {
+            i = -1;
+            linCurenta++;
+            std::cout << "\n";
+            if (linCurenta == nrLin)
+                break;
+        }
+    }
+}
+int DeterminaElemMax(int *matr, int nrLin, int nrCol)
+{
+    int max = 0;
+    for (int i = 0; i < nrLin * nrCol; i++)
+    {
+        if (matr[i] > max)
+            max = matr[i];
+    }
+    return max;
+}
+std::tuple<int, int> DetermineMaximumIndexes(int *matr, int nrLin, int nrCol)
+{
+    std::tuple<int, int> indiciValMaxima = std::make_tuple(0, 0);
+    int linCurenta = 0;
+    int max = DeterminaElemMax(matr, nrLin, nrCol);
+    for (int i = 0; i < nrCol; i++)
+    {
+        if (matr[linCurenta * nrCol + i] == max)
+        {
+            std::get<0>(indiciValMaxima) = linCurenta;
+            std::get<1>(indiciValMaxima) = i;
+            break;
+        }
+        if (i == nrCol - 1)
+        {
+            linCurenta++;
+            i = -1;
+            // if (linCurenta == nrLin)
+            //     break;
+            // nu-i nevoie, deoarece inevitabil vom gasi elem maxim si vom iesi
+        }
+    }
+    return indiciValMaxima;
 }
 
 void BubbleSort(int *a, int n)
@@ -111,6 +252,7 @@ void SelectionSort(int *a, int n)
         swapA(a, i, m);
     }
 }
+
 template <typename T>
 void InsertionSort(T *a, int n)
 {
