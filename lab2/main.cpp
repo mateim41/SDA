@@ -7,7 +7,7 @@ void SelectionSort(int *a, int n);
 template <typename T>
 void InsertionSort(T *a, int n);
 bool BruteForceSearch(int *a, int n, int elem);
-bool BinarySearch(int *a, int n, int elem);
+bool BinarySearch(int *a, int n, int elem, int startPoint);
 bool BinarySearchRecursive(int *a, int elem, int st, int dr);
 
 int *CreateMatrix(int &nl, int &nc);
@@ -96,12 +96,35 @@ void pb4()
 {
     int nl, nc;
     int *Matrice = CreateMatrix(nl, nc);
-    
+    std::cout << "Introduceti elementul cautat: ";
+    int x;
+    std::cin >> x;
 
+    int linCurenta = 0;
+    int coloana = 0;
+    bool found = false;
+    for (int i = 0; i < nc; i++)
+    {
+        found = BinarySearch(Matrice, nc, x, linCurenta * nl);
+        if (found)
+            break;
+        linCurenta++;
+        i = -1;
+    }
+    for (int i = 0; i < nc; i++)
+    {
+        if (Matrice[linCurenta * nc + i] == x)
+        {
+            coloana = i;
+            break;
+        }
+    }
+    std::cout << "Elem " << x << " se gaseste pe poz " << linCurenta << " " << coloana << "\n";
 
     delete[] Matrice;
     Matrice = nullptr;
 }
+
 int main()
 {
     // pb1();
@@ -288,10 +311,10 @@ bool BruteForceSearch(int *a, int n, int elem)
     return false;
 }
 
-bool BinarySearch(int *a, int n, int elem)
+bool BinarySearch(int *a, int n, int elem, int startPoint) // pt array ordonat crescator
 {
     int nrOperatii = 0;
-    int st = 0, dr = n - 1;
+    int st = startPoint, dr = startPoint + n - 1;
     while (st <= dr)
     {
         int m = (st + dr) / 2;
