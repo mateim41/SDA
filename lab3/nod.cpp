@@ -15,35 +15,51 @@ void CreateList(Nod *&cap) // cu inserare in fata listei
     std::cout << "\n";
 }
 
-void DeleteList(Nod *&cap)
+void CreateList(Nod *&cap, Nod *&last)
 {
-    Nod *p = cap->succ;
-    while (cap)
+    int x;
+    std::cout << "Introduceti x sau 0 pt a iesi: ";
+    std::cin >> x;
+    while (x)
     {
-        delete cap;
-        cap = p;
-        if (cap->succ != 0)
-            p = cap->succ;
+        if (cap == nullptr)
+        {
+            Add(x, cap);
+            last = cap;
+        }
         else
         {
-            delete cap;
-            break;
+            Add(x, last);
         }
+        std::cout << "Introduceti x: ";
+        std::cin >> x;
     }
 }
 
-// void Add(int elem, Nod *&last)
-// {
-//     Nod *p = new Nod;
-//     p->data = elem;
-//     if (last == nullptr)
-//     {
+void DeleteList(Nod *&cap)
+{
+    while (cap)
+    {
+        Nod *temp = cap;
+        cap = cap->succ;
+        delete temp;
+    }
+}
 
-//     }
-//     else
-//     {
-//     }
-// }
+void Add(int elem, Nod *&last)
+{
+    Nod *p = new Nod;
+    p->data = elem;
+    if (last == nullptr) // primul element
+    {
+        last = p;
+    }
+    else
+    {
+        last->succ = p;
+        last = p;
+    }
+}
 
 void Remove(int elem, Nod *&cap)
 {
@@ -151,4 +167,74 @@ bool ListHasLoops(Nod *cap)
         q = q->succ;
     }
     return false;
+}
+
+Nod *DetermineMiddleElement(Nod *cap)
+{
+    Nod *p = cap;
+    Nod *q = cap->succ->succ;
+    while (q)
+    {
+        p = p->succ;
+        if (q->succ != nullptr)
+        {
+            q = q->succ->succ;
+        }
+        else
+        {
+            q = q->succ;
+        }
+    }
+    return p;
+}
+
+void InvertLinks(Nod *&cap)
+{
+    Nod *prev = 0;
+    Nod *next = cap->succ;
+    while (next)
+    {
+        cap->succ = prev;
+        prev = cap;
+        cap = next;
+        next = next->succ;
+    }
+    cap->succ = prev;
+}
+
+// NU returna referinta
+// variabila din interior se distruge, insa eu voi returna adresa corespunzatoare
+Nod *MergeLists(Nod *&xcap, Nod *&ycap)
+{
+    Nod *zcap;
+    Nod *p = xcap;
+    Nod *q = p->succ;
+
+    Nod *r = ycap;
+    Nod *s = r->succ;
+    while (q != nullptr && s != nullptr)
+    {
+        p->succ = r;
+        r->succ = q;
+
+        p = q;
+        q = q->succ;
+
+        r = s;
+        s = s->succ;
+    }
+    if (q == nullptr)
+    {
+        p->succ = r;
+    }
+    else if (s == nullptr)
+    {
+        p->succ = r;
+        r->succ = q;
+    }
+
+    zcap = xcap;
+    xcap = nullptr;
+    ycap = nullptr;
+    return zcap;
 }
