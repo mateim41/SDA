@@ -84,10 +84,10 @@ void pb3()
     CreatePhonebook(phonebook);
     std::cout << *phonebook;
 
-    std::cout << "Introduceti a - Inserare element in lista pe o pozitie\nb - Sterge din lista o anumita persoana\nc - Cauta in agenda numarul unei persoane\nd - Afiseaza agenda\n";
-    char operatie;
-    std::cin >> operatie;
-    std::cin >> std::ws;
+    // std::cout << "Introduceti a - Inserare element in lista pe o pozitie\nb - Sterge din lista o anumita persoana\nc - Cauta in agenda numarul unei persoane\nd - Afiseaza agenda\n";
+    // char operatie;
+    // std::cin >> operatie;
+    // std::cin >> std::ws;
 
     // std::string indexText = 0;
     // std::string nume;
