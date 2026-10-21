@@ -18,7 +18,7 @@ void CreatePhonebook(Phonebook *&phonebook)
         std::getline(std::cin, telefon);
         /*
             - std::cin lasa in buffer un \n
-            - daca foloseam std::cin pt telefon trebuia sa apelez std::ws in getline pt a elimina \n,\t,\s 
+            - daca foloseam std::cin pt telefon trebuia sa apelez std::ws in getline pt a elimina \n,\t,\s
 
             std::getline(std::cin >> std::ws, nume);
             ...
@@ -48,14 +48,14 @@ void Phonebook::Add(std::string nume, std::string telefon)
 
 void Phonebook::Insert(std::string nume, std::string telefon, int index)
 {
-    Node *q = new Node;
-    q->nume = nume;
-    q->telefon = telefon;
-    Node *p = head;
     if (index < 1)
     {
         return;
     }
+    Node *q = new Node;
+    q->nume = nume;
+    q->telefon = telefon;
+    Node *p = head;
     if (index == 1)
     {
         q->succ = p;

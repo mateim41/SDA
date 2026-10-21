@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <algorithm>
 #include "nod.hpp"
 #include "Phonebook.hpp"
 
@@ -81,6 +83,32 @@ void pb3()
     Phonebook *phonebook = new Phonebook;
     CreatePhonebook(phonebook);
     std::cout << *phonebook;
+
+    std::cout << "Introduceti a - Inserare element in lista pe o pozitie\nb - Sterge din lista o anumita persoana\nc - Cauta in agenda numarul unei persoane\nd - Afiseaza agenda\n";
+    char operatie;
+    std::cin >> operatie;
+    std::cin >> std::ws;
+
+    // std::string indexText = 0;
+    // std::string nume;
+    // std::string telefon;
+    // switch (operatie)
+    // {
+    // case 'a':
+    //     std::cout << "Introdu pozitia: ";
+    //     std::getline(std::cin, indexText);
+    //     int index = std::stoi(indexText); // nu introduc date proaste; corect trb un block try catch
+    //     std::cout << "Introdu numele: ";
+    //     std::getline(std::cin, nume);
+    //     std::cout << "Introdu nr de telefon: ";
+    //     std::getline(std::cin, telefon);
+
+    //     phonebook->Insert(nume, telefon, index);
+    //     break;
+    // // Restul la fel; daca vreau pot sa fac intr-un while si sa tot intreb ce vrea sa faca
+    // default:
+    //     break;
+    // }
 
     delete phonebook;
 }
