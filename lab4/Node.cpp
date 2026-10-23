@@ -5,7 +5,7 @@ void Add(Node *&last, int elem)
 {
     Node *p = new Node;
     p->data = elem;
-    if (!last)
+    if (!last) // pt lista vida
     {
         last = p;
         last->succ = last;
