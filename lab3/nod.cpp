@@ -50,7 +50,7 @@ void Add(int elem, Nod *&last)
 {
     Nod *p = new Nod;
     p->data = elem;
-    if (last == nullptr) // primul element
+    if (!last) // primul element
     {
         last = p;
     }
@@ -146,7 +146,7 @@ bool Contains(int x, Nod *cap)
     Nod *p = cap;
     while (p)
     {
-        if (p->data = x)
+        if (p->data == x)
             return true;
         p = p->succ;
     }
