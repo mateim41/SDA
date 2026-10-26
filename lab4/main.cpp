@@ -2,6 +2,17 @@
 #include "Node.hpp"
 // mereu cand e de sters facem o copie si stergem copia (de ex la cap nu stergem capul ci copia)
 
+void pb1()
+{
+    LinkedNode *cap = nullptr;
+    LinkedNode *last = nullptr;
+    CreateDoublyLinkedList(cap, last);
+    RemoveBeforeIndex(cap, 3);
+    PrintList(cap);
+
+    Delete(cap);
+}
+
 void pb5()
 {
     Node *cap = nullptr;
@@ -14,7 +25,8 @@ void pb5()
 
 int main()
 {
-    pb5();
+    pb1();
+    // pb5();
 
     return 0;
 }
