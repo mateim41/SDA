@@ -6,11 +6,56 @@ void pb1()
 {
     LinkedNode *cap = nullptr;
     LinkedNode *last = nullptr;
-    CreateDoublyLinkedList(cap, last);
+    CreateDoublyLinkedList(cap);
+    PrintList(cap);
     RemoveBeforeIndex(cap, 3);
+    std::cout << "\n";
     PrintList(cap);
 
-    Delete(cap);
+    DeleteList(cap);
+}
+
+void pb2a()
+{
+    LinkedNode *xcap = nullptr;
+    LinkedNode *xlast = nullptr;
+    CreateDoublyLinkedList(xcap, xlast);
+    std::cout << "\n";
+
+    LinkedNode *ycap = nullptr;
+    LinkedNode *ylast = nullptr;
+    CreateDoublyLinkedList(ycap, ylast);
+
+    LinkedNode *zcap = nullptr;
+    xlast->succ = ycap;
+    ycap->prev = xlast;
+    zcap = xcap;
+    xcap = nullptr;
+    ycap = nullptr;
+    xlast = nullptr;
+    ylast = nullptr;
+    PrintList(zcap);
+
+    DeleteList(zcap);
+}
+
+void pb2b()
+{
+    LinkedNode *xcap = nullptr;
+    LinkedNode *xlast = nullptr;
+    CreateDoublyLinkedList(xcap, xlast);
+    std::cout << "\n";
+
+    LinkedNode *ycap = nullptr;
+    LinkedNode *ylast = nullptr;
+    CreateDoublyLinkedList(ycap, ylast);
+
+    LinkedNode *zcap = MergeLists(xcap, ycap);
+    xlast = nullptr;
+    ylast = nullptr;
+    PrintList(zcap);
+
+    DeleteList(zcap);
 }
 
 void pb5()
@@ -25,7 +70,9 @@ void pb5()
 
 int main()
 {
-    pb1();
+    // pb1();
+    // pb2a();
+    pb2b();
     // pb5();
 
     return 0;

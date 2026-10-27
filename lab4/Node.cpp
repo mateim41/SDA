@@ -16,7 +16,7 @@ void AddFirst(LinkedNode *&cap, int elem)
         p->succ = cap;
         cap->prev = p;
         cap = p;
-        cap->prev = 0;
+        cap->prev = nullptr;
     }
 }
 
@@ -111,7 +111,46 @@ void RemoveBeforeIndex(LinkedNode *&cap, int index)
     delete p;
 }
 
-void Delete(LinkedNode *&cap)
+LinkedNode *MergeLists(LinkedNode *&xcap, LinkedNode *&ycap)
+{
+    auto p = xcap;
+    auto q = p->succ;
+
+    auto r = ycap;
+    auto s = r->succ;
+    auto zcap = xcap;
+    while (q && s)
+    {
+        p->succ = r;
+        r->prev = p;
+
+        r->succ = q;
+        q->prev = r;
+
+        p = q;
+        q = q->succ;
+        r = s;
+        s = s->succ;
+    }
+    if ((!s && !q) || !q)
+    {
+        r->prev = p;
+        p->succ = r;
+    }
+    else if (!s)
+    {
+        p->succ = r;
+        r->prev = p;
+        r->succ = q;
+        q->prev = r;
+    }
+    xcap = nullptr;
+    ycap = nullptr;
+
+    return zcap;
+}
+
+void DeleteList(LinkedNode *&cap)
 {
     while (cap)
     {

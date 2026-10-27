@@ -21,7 +21,8 @@ void CreateDoublyLinkedList(LinkedNode *&cap, LinkedNode *&last);
 void PrintList(LinkedNode *cap);
 void Insert(LinkedNode *&cap, int elem, int index);
 void RemoveBeforeIndex(LinkedNode *&cap, int index); // sterg elementul din fata unui index
-void Delete(LinkedNode *&cap);
+LinkedNode *MergeLists(LinkedNode *&xcap, LinkedNode *&ycap);
+void DeleteList(LinkedNode *&cap);
 
 // circular singly linked list
 void Add(Node *&last, int elem);
