@@ -188,20 +188,100 @@ void CreateCircularList(Node *&cap, Node *&last)
     Add(cap, x);
     last = cap;
 
+    std::cout << "Introdu elementul: ";
+    std::cin >> x;
     while (x)
     {
+        Add(last, x);
         std::cout << "Introdu elementul: ";
         std::cin >> x;
-        if (!x)
-            break;
-        Add(last, x);
     }
+}
+
+void InvertLinks(Node *&cap)
+{
+    Node *prev = nullptr;
+    Node *p = cap;
+    Node *next = p->succ;
+    while (next != cap)
+    {
+        if (!prev)
+        {
+            prev = p;
+            p = next;
+            next = next->succ;
+        }
+        else
+        {
+            p->succ = prev;
+            prev = p;
+            p = next;
+            next = next->succ;
+        }
+    }
+    p->succ = prev;
+    cap->succ = p;
+    cap = p;
+}
+
+Node *ConcatenateCircularSinglyLinkedLists(Node *&xcap, Node *&ycap)
+{
+    Node *p = xcap;
+    while (p->succ != xcap)
+        p = p->succ;
+    p->succ = ycap;
+
+    Node *q = ycap;
+    while (q->succ != ycap)
+        q = q->succ;
+    q->succ = xcap;
+
+    Node *zcap = xcap;
+    xcap = nullptr;
+    ycap = nullptr;
+    return zcap;
+}
+
+Node *MergeCircularLists(Node *&xcap, Node *&ycap)
+{
+    auto p = xcap;
+    auto q = p->succ;
+    auto r = ycap;
+    auto s = r->succ;
+    while (q != xcap && s != ycap)
+    {
+        p->succ = r;
+        r->succ = q;
+
+        p = q;
+        q = q->succ;
+
+        r = s;
+        s = s->succ;
+    }
+    if (q == xcap)
+    {
+        p->succ = r;
+        while (s->succ != ycap)
+            s = s->succ;
+        s->succ = xcap;
+    }
+    else if (s == ycap || (q == xcap && s == ycap))
+    {
+        p->succ = r;
+        r->succ = q;
+    }
+    Node *zcap = xcap;
+    xcap = nullptr;
+    ycap = nullptr;
+    
+    return zcap;
 }
 
 void DeleteList(Node *&cap)
 {
-    Node *p = cap;
-    while (p->succ != cap)
+    Node *p = cap->succ;
+    while (p != cap)
     {
         Node *temp = p->succ;
         delete p;

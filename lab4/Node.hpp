@@ -26,8 +26,10 @@ void DeleteList(LinkedNode *&cap);
 
 // circular singly linked list
 void Add(Node *&last, int elem);
-void Remove(Node *&cap, Node *&last, int elem);
 void CreateCircularList(Node *&cap, Node *&last);
+void InvertLinks(Node *&cap);
+Node *ConcatenateCircularSinglyLinkedLists(Node *&xcap, Node *&ycap);
+Node *MergeCircularLists(Node *&xcap, Node *&ycap);
 void DeleteList(Node *&cap);
 void DisplayList(Node *cap);
 
