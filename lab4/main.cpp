@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <cstring>
+#include "DoublyLinkedList.hpp"
 #include "Node.hpp"
 // mereu cand e de sters facem o copie si stergem copia (de ex la cap nu stergem capul ci copia)
 
@@ -100,14 +103,60 @@ void pb5()
     DeleteList(cap);
 }
 
+void pb6()
+{
+    std::string nr = GetInputNumber();
+    LinkedList::LinkedNode *xcap = nullptr;
+    LinkedList::LinkedNode *xlast = nullptr;
+
+    std::string cifre_nr[nr.length() / 3];
+    for (int i = 0; i < nr.length() / 3; i++)
+    {
+        std::string temp = nr.substr(i * 3, 3);
+        cifre_nr[i] = temp;
+    }
+
+    for (int i = nr.length() / 3 - 1; i >= 0; i--)
+    {
+        LinkedList::Add(xcap, xlast, cifre_nr[i]);
+    }
+    std::cout << "\n";
+    LinkedList::DisplayList(xcap);
+    std::cout << '\n';
+
+    std::string nr2 = GetInputNumber();
+    LinkedList::LinkedNode *ycap = nullptr;
+    LinkedList::LinkedNode *ylast = nullptr;
+    std::string cifre_nr2[nr2.length() / 3];
+    for (int i = 0; i < nr2.length() / 3; i++)
+    {
+        std::string temp = nr2.substr(i * 3, 3);
+        cifre_nr2[i] = temp;
+    }
+
+    for (int i = nr2.length() / 3 - 1; i >= 0; i--)
+    {
+        LinkedList::Add(ycap, ylast, cifre_nr2[i]);
+    }
+
+    LinkedList::Compare(xcap, ycap);
+
+    LinkedList::DeleteList(xcap);
+    LinkedList::DeleteList(ycap);
+}
+
 int main()
 {
     // pb1();
     // pb2a();
     // pb2b();
     // pb3();
-    pb4();
+    // pb4();
     // pb5();
+    // pb6();
+    std::string s1("919");
+    std::string s2("918");
+    std::cout << (s1 > s2) << "\n";
 
     return 0;
 }
