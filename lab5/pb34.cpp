@@ -54,10 +54,61 @@ std::string ConvertExpressionPostFixed(std::string expresie)
     return convertedExpression.substr(1);
 }
 
-int CalculateExpression(std::string expresie)
+template <typename T>
+void MakeOperation(StivaDinamic<T> *&s, char &c)
+{
+    // inmultirea si adunarea sunt comutative
+    // impartirea si scaderea nu sunt
+    // eu vreau sa aplic operatiile numerelor care apar primele in ecuatie
+    // adica in cazul stivei elementului de desubtul celui curent
+    // (care este cel pe care il adaug rezultatului)
+
+    int result = 0;
+    if (c == '+')
+    {
+        int nr1 = Top(s);
+        Pop(s);
+        int nr2 = Top(s);
+        Pop(s);
+
+        result = (nr2 + nr1);
+        Push(s, result);
+    }
+    else if (c == '-')
+    {
+        int nr1 = Top(s);
+        Pop(s);
+        int nr2 = Top(s);
+        Pop(s);
+
+        result = (nr2 - nr1);
+        Push(s, result);
+    }
+    else if (c == '*')
+    {
+        int nr1 = Top(s);
+        Pop(s);
+        int nr2 = Top(s);
+        Pop(s);
+
+        result = (nr2 * nr1);
+        Push(s, result);
+    }
+    else if (c == '/')
+    {
+        int nr1 = Top(s);
+        Pop(s);
+        int nr2 = Top(s);
+        Pop(s);
+
+        result = (nr2 / nr1);
+        Push(s, result);
+    }
+}
+
+int CalculateExpressionPostFixed(std::string expresie)
 {
     std::string convExpr = ConvertExpressionPostFixed(expresie);
-    int result = 0;
     StivaDinamic<int> *s = nullptr; // s - tine operanzii
 
     for (auto &&c : convExpr)
@@ -66,19 +117,28 @@ int CalculateExpression(std::string expresie)
         {
             if (!IsOperand(c))
             {
+                int nr = c - '0';
+                Push(s, nr);
+            }
+            else
+            {
+                MakeOperation(s, c);
             }
         }
     }
+    int result = Top(s);
+    Pop(s);
+    return result;
 }
 
 int main()
 {
     // 1 + 2 * 3 - 21 - 5 + 11 * 12 / 3 + 32
-    std::string expresie = "1 + 2 * 3 - 4 - 5 + 9 * 8 / 3 + 2";
+    std::string expresie = "1 + 2 + 3 + 4 + 5 * 7 / 3 - 2";
     // std::getline(std::cin, expresie);
     // expresie = ConvertExpressionPostFixed(expresie);
     // std::cout << expresie << "\n";
-    
+    std::cout << CalculateExpressionPostFixed(expresie) << "\n";
 
     return 0;
 }
