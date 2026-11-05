@@ -125,11 +125,92 @@ int EvaluateExpressionPostFixed(const std::string &expresie)
     return result;
 }
 
+std::string ConvertFromPostFixToPreFix(const std::string &expresie)
+{
+    std::string expresiePostFixed = ConvertEquationPostFixed(expresie);
+    StivaDinamic<std::string> *stack = nullptr;
+
+    for (auto &&c : expresiePostFixed)
+    {
+        if (c != ' ')
+        {
+            if (!IsOperator(c))
+            {
+                std::string temp(1, c);
+                Push(stack, temp);
+            }
+            else
+            {
+                std::string nr2 = Top(stack);
+                Pop(stack);
+
+                std::string nr1 = Top(stack);
+                Pop(stack);
+
+                std::string exprModif(1, c);
+                exprModif += (nr1 + nr2);
+                Push(stack, exprModif);
+            }
+        }
+    }
+    std::string result = Top(stack);
+    Pop(stack);
+    return result;
+}
+
+int EvaluateExpressionPreFixed(const std::string &expresie)
+{
+    std::string expresiePrefix = ConvertFromPostFixToPreFix(expresie);
+    StivaDinamic<int> *stack = nullptr;
+
+    for (int i = expresiePrefix.length() - 1; i >= 0; i--)
+    {
+        char c = expresiePrefix[i];
+        if (!IsOperator(c))
+        {
+            int nr = c - '0';
+            Push(stack, nr);
+        }
+        else
+        {
+            auto nr1 = Top(stack);
+            Pop(stack);
+
+            auto nr2 = Top(stack);
+            Pop(stack);
+
+            // functia MakeOperation functioneaza doar pentru forma post fixata
+            int result = 0;
+            switch (c)
+            {
+            case '+':
+                result = nr1 + nr2;
+                break;
+            case '-':
+                result = nr1 - nr2;
+                break;
+            case '*':
+                result = nr1 * nr2;
+                break;
+            case '/':
+                result = nr1 / nr2;
+                break;
+            default:
+                break;
+            }
+            Push(stack, result);
+        }
+    }
+    int output = Top(stack);
+    Pop(stack);
+    return output;
+}
+
 int main()
 {
-    // 1+5*(-2+3-5+6*2/7)/2*9-2
-    std::string expresie = "(2+3)*5-6";
-    std::cout << EvaluateExpressionPostFixed(expresie) << "\n";
+    // 1+5*(3-2-5+6*2/7)/2*9-2
+    std::string expresie = "1+5*(3-2-5+6*2/7)/2*9-2";
+    std::cout << EvaluateExpressionPreFixed(expresie) << '\n';
 
     return 0;
 }
