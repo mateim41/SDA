@@ -108,6 +108,7 @@ void pb6()
     std::string nr = GetInputNumber();
     LinkedList::LinkedNode *xcap = nullptr;
     LinkedList::LinkedNode *xlast = nullptr;
+    int xElem = 0;
 
     std::string cifre_nr[nr.length() / 3];
     for (int i = 0; i < nr.length() / 3; i++)
@@ -118,7 +119,7 @@ void pb6()
 
     for (int i = nr.length() / 3 - 1; i >= 0; i--)
     {
-        LinkedList::Add(xcap, xlast, cifre_nr[i]);
+        LinkedList::Add(xcap, xlast, cifre_nr[i], xElem);
     }
     std::cout << "\n";
     LinkedList::DisplayList(xcap);
@@ -128,6 +129,8 @@ void pb6()
     LinkedList::LinkedNode *ycap = nullptr;
     LinkedList::LinkedNode *ylast = nullptr;
     std::string cifre_nr2[nr2.length() / 3];
+    int yElem = 0;
+
     for (int i = 0; i < nr2.length() / 3; i++)
     {
         std::string temp = nr2.substr(i * 3, 3);
@@ -136,13 +139,12 @@ void pb6()
 
     for (int i = nr2.length() / 3 - 1; i >= 0; i--)
     {
-        LinkedList::Add(ycap, ylast, cifre_nr2[i]);
+        LinkedList::Add(ycap, ylast, cifre_nr2[i], yElem);
     }
+    LinkedList::Compare(xcap, ycap, xElem, yElem);
 
-    LinkedList::Compare(xcap, ycap);
-
-    LinkedList::DeleteList(xcap);
-    LinkedList::DeleteList(ycap);
+    LinkedList::DeleteList(xcap, xlast, xElem);
+    LinkedList::DeleteList(ycap, ylast, yElem);
 }
 
 int main()
@@ -153,10 +155,7 @@ int main()
     // pb3();
     // pb4();
     // pb5();
-    // pb6();
-    std::string s1("919");
-    std::string s2("918");
-    std::cout << (s1 > s2) << "\n";
+    pb6();
 
     return 0;
 }

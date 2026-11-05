@@ -1,9 +1,11 @@
 #include <iostream>
-#include <string>
+#include "LinkedNode.hpp"
 #include <cstring>
-#include "StivaDinamic.hpp"
+#include <string>
+#include <cctype>
+#include <string_view>
 
-bool IsOperand(char &c)
+bool IsOperator(const char &c)
 {
     if (strchr("+-*/()", c))
         return true;
@@ -21,101 +23,93 @@ int Priority(const char &c)
     return -1;
 }
 
-std::string ConvertExpressionPostFixed(std::string expresie)
+// daca am numere negative  trebuie sa mai modific conditiile putin
+// eg: -2 + 3 => 3 - 2
+std::string ConvertEquationPostFixed(const std::string &expresie)
 {
-    std::string convertedExpression = std::string();
-    StivaDinamic<char> *s = nullptr;
+    std::string convertedEquation = "";
+    StivaDinamic<char> *s = nullptr; // pt operanzi
 
     for (auto &&c : expresie)
     {
         if (!strchr(" ", c))
         {
-            if (!IsOperand(c))
+            if (c == '(')
             {
-                convertedExpression = convertedExpression + " " + c;
+                Push(s, c);
+            }
+            else if (!IsOperator(c))
+            {
+                convertedEquation = convertedEquation + ' ' + c;
             }
             else
             {
                 while (!IsEmpty(s) && Priority(c) <= Priority(Top(s)))
                 {
-                    convertedExpression = convertedExpression + " " + Top(s);
+                    if (Top(s) != '(')
+                        convertedEquation = convertedEquation + ' ' + Top(s);
+                    else
+                    {
+                        Pop(s);
+                        break;
+                    }
                     Pop(s);
                 }
-                Push(s, c);
+                if (c != ')')
+                    Push(s, c);
             }
         }
     }
     while (!IsEmpty(s))
     {
-        convertedExpression = convertedExpression + " " + Top(s);
+        convertedEquation = convertedEquation + ' ' + Top(s);
         Pop(s);
     }
 
-    return convertedExpression.substr(1);
+    return convertedEquation.substr(1);
 }
 
 template <typename T>
-void MakeOperation(StivaDinamic<T> *&s, char &c)
+int MakeOperation(StivaDinamic<T> *&s, const char &c)
 {
-    // inmultirea si adunarea sunt comutative
-    // impartirea si scaderea nu sunt
-    // eu vreau sa aplic operatiile numerelor care apar primele in ecuatie
-    // adica in cazul stivei elementului de desubtul celui curent
-    // (care este cel pe care il adaug rezultatului)
-
     int result = 0;
-    if (c == '+')
-    {
-        int nr1 = Top(s);
-        Pop(s);
-        int nr2 = Top(s);
-        Pop(s);
+    int nr1 = Top(s);
+    Pop(s);
 
-        result = (nr2 + nr1);
-        Push(s, result);
-    }
-    else if (c == '-')
+    int nr2 = Top(s);
+    Pop(s);
+    switch (c)
     {
-        int nr1 = Top(s);
-        Pop(s);
-        int nr2 = Top(s);
-        Pop(s);
-
-        result = (nr2 - nr1);
-        Push(s, result);
+    case '+':
+        result = nr2 + nr1;
+        break;
+    case '-':
+        result = nr2 - nr1;
+        break;
+    case '*':
+        result = nr2 * nr1;
+        break;
+    case '/':
+        result = nr2 / nr1;
+        break;
+    default:
+        break;
     }
-    else if (c == '*')
-    {
-        int nr1 = Top(s);
-        Pop(s);
-        int nr2 = Top(s);
-        Pop(s);
-
-        result = (nr2 * nr1);
-        Push(s, result);
-    }
-    else if (c == '/')
-    {
-        int nr1 = Top(s);
-        Pop(s);
-        int nr2 = Top(s);
-        Pop(s);
-
-        result = (nr2 / nr1);
-        Push(s, result);
-    }
+    Push(s, result);
+    return result;
 }
 
-int CalculateExpressionPostFixed(std::string expresie)
+int EvaluateExpressionPostFixed(const std::string &expresie)
 {
-    std::string convExpr = ConvertExpressionPostFixed(expresie);
-    StivaDinamic<int> *s = nullptr; // s - tine operanzii
+    std::string modifiedEquation = ConvertEquationPostFixed(expresie);
+    StivaDinamic<int> *s = nullptr; // stiva pentru operat
+    int result = 0;
 
-    for (auto &&c : convExpr)
+    for (auto &&c : modifiedEquation)
     {
         if (!strchr(" ", c))
         {
-            if (!IsOperand(c))
+            if (!IsOperator(c))
             {
                 int nr = c - '0';
                 Push(s, nr);
@@ -126,19 +120,16 @@ int CalculateExpressionPostFixed(std::string expresie)
             }
         }
     }
-    int result = Top(s);
+    result = Top(s);
     Pop(s);
     return result;
 }
 
 int main()
 {
-    // 1 + 2 * 3 - 21 - 5 + 11 * 12 / 3 + 32
-    std::string expresie = "1 + 2 + 3 + 4 + 5 * 7 / 3 - 2";
-    // std::getline(std::cin, expresie);
-    // expresie = ConvertExpressionPostFixed(expresie);
-    // std::cout << expresie << "\n";
-    std::cout << CalculateExpressionPostFixed(expresie) << "\n";
+    // 1+5*(-2+3-5+6*2/7)/2*9-2
+    std::string expresie = "(2+3)*5-6";
+    std::cout << EvaluateExpressionPostFixed(expresie) << "\n";
 
     return 0;
 }
