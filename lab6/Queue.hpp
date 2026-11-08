@@ -96,6 +96,7 @@ inline T Queue<T>::Dequeue()
     if (!IsEmpty())
     {
         T temp = vect[head];
+        vect[head] = T{}; // default value
         head = NextPosition(head);
         Count--;
         return temp;
