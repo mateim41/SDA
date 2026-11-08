@@ -1,100 +1,118 @@
 #if !defined(QUEUE_HPP)
 #define QUEUE_HPP
 
-#include <iostream>
+#include <exception>
 
 template <typename T>
-struct Node
+class Queue
 {
-    T data;
-    Node *next;
-    Node() : next(nullptr) {}
-    Node(T x) : data(x), next(nullptr) {}
-    Node(const Node *next, T x) : data(x), next(next) {}
+private:
+    int head, tail;
+    T *vect = new T[2];
+
+    int NextPosition(int &index);
+    bool IsEmpty();
+    bool IsFull();
+
+public:
+    int Capacity = 2;
+    int Count = 0;
+
+    Queue() : head(0), tail(0) {}
+    ~Queue();
+    void Enqueue(T x);
+    T Dequeue();
+    T Peek();
 };
+// tail ne va arata urmatorul spatiu liber pentru a insera astel incat
+// vom insera pe index tail - 1 ca sa avem un spatiu liber intre tail si head
+
+// daca ajung la finalul array-ului revin la inceput pe index 0
 
 template <typename T>
-struct Queue
+inline int Queue<T>::NextPosition(int &index)
 {
-    Node<T> *first;
-    Node<T> *last;
-    Queue() : first(nullptr), last(nullptr) {}
-};
-
-template <typename T>
-bool IsEmpty(const Queue<T> &q)
-{
-    if (!q.first)
-        return true;
-    return false;
+    if (index < Capacity - 1)
+        return index + 1;
+    return 0;
 }
 
 template <typename T>
-void Push(Queue<T> &q, T elem)
+inline bool Queue<T>::IsEmpty()
 {
-    Node<T> *p = new Node<T>(elem);
-    if (IsEmpty(q))
+    return head == tail;
+}
+
+template <typename T>
+inline bool Queue<T>::IsFull()
+{
+    return NextPosition(tail) == head;
+}
+
+template <typename T>
+inline Queue<T>::~Queue()
+{
+    delete[] vect;
+    vect = nullptr;
+
+    Capacity = 0;
+    Count = 0;
+}
+
+template <typename T>
+inline void Queue<T>::Enqueue(T x)
+{
+    if (!IsFull())
     {
-        q.first = p;
-        q.last = p;
+        vect[tail] = x;
+        tail = NextPosition(tail);
+        Count++;
     }
     else
     {
-        q.last->next = p;
-        q.last = p;
+        T *temp = new T[Capacity * 2];
+
+        int k = 0;
+        int copyCount = Count;
+        while (!IsEmpty())
+        {
+            temp[k++] = Dequeue();
+        }
+        delete[] vect;
+        vect = temp;
+
+        Capacity *= 2;
+        head = 0;
+        tail = k;
+        vect[tail] = x;
+        tail = NextPosition(tail);
+        Count = copyCount + 1;
     }
 }
 
 template <typename T>
-void Pop(Queue<T> &q)
+inline T Queue<T>::Dequeue()
 {
-    if (!IsEmpty(q))
+    if (!IsEmpty())
     {
-        Node<T> *currentElem = q.first;
-        q.first = q.first->next;
-
-        delete currentElem;
+        T temp = vect[head];
+        head = NextPosition(head);
+        Count--;
+        return temp;
     }
-}
-
-template <typename T>
-T Front(const Queue<T> &q)
-{
-    if (!IsEmpty(q))
-        return q.first->data;
-    return;
-}
-
-template <typename T>
-T Back(const Queue<T> &q)
-{
-    if (!IsEmpty(q))
-        return q.last->data;
-    return;
-}
-
-template <typename T>
-void DisplayQueue(const Queue<T> &q)
-{
-    Node<T> *p = q.first;
-    while (p)
+    else
     {
-        std::cout << p->data << " ";
-        p = p->next;
+        throw std::exception();
     }
 }
 
 template <typename T>
-void DeleteList(Queue<T> &q)
+inline T Queue<T>::Peek()
 {
-    Node<T> *p = q.first;
-    while (p)
-    {
-        Node<T> *temp = p;
-        p = p->next;
-
-        delete temp;
-    }
+    if (!IsEmpty())
+        return vect[head];
+    else
+        throw std::exception();
 }
 
 #endif // QUEUE_HPP
