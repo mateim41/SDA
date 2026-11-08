@@ -8,7 +8,7 @@ class Queue
 {
 private:
     int head, tail;
-    T *vect = new T[2];
+    T *vect = new T[2]{};
 
     int NextPosition(int &index);
     bool IsEmpty();
@@ -70,7 +70,7 @@ inline void Queue<T>::Enqueue(T x)
     }
     else
     {
-        T *temp = new T[Capacity * 2];
+        T *temp = new T[Capacity * 2]{};
 
         int k = 0;
         int copyCount = Count;
