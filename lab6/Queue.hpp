@@ -2,6 +2,7 @@
 #define QUEUE_HPP
 
 #include <exception>
+#include <stdexcept>
 
 template <typename T>
 class Queue
@@ -57,6 +58,8 @@ inline Queue<T>::~Queue()
 
     Capacity = 0;
     Count = 0;
+    head = -1;
+    tail = -1;
 }
 
 template <typename T>
@@ -97,13 +100,14 @@ inline T Queue<T>::Dequeue()
     {
         T temp = vect[head];
         vect[head] = T{}; // default value
+
         head = NextPosition(head);
         Count--;
         return temp;
     }
     else
     {
-        throw std::exception();
+        throw std::out_of_range("Queue is empty.");
     }
 }
 
@@ -113,7 +117,7 @@ inline T Queue<T>::Peek()
     if (!IsEmpty())
         return vect[head];
     else
-        throw std::exception();
+        throw std::out_of_range("Queue is empty.");
 }
 
 #endif // QUEUE_HPP
