@@ -72,6 +72,8 @@ inline void Queue<T>::Enqueue(T x)
         Count++;
     }
     else
+    // In order to dequeue correctly I have to modify the capacity only after I'm done copying the elements
+    // I make a copy of the Count because Dequeue modifies the number of elements
     {
         T *temp = new T[Capacity * 2]{};
 
