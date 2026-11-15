@@ -129,7 +129,7 @@ int main()
     posInit.y = imgIn.height() / 2;
 
     // imgIn este o imagine grayscale (fiecare pixel este reprezentat de o valoare pe 8 biti, in [0,255])
-    CImg<unsigned char> imgOut = ColoreazaDomeniu(imgIn, posInit, (unsigned char)12, dispOut);
+    CImg<unsigned char> imgOut = ColoreazaDomeniu(imgIn, posInit, (unsigned char)255, dispOut);
 
     // Afisarea imaginilor
     dispOut = CImgDisplay(imgOut, "Output");
