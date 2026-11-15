@@ -79,16 +79,16 @@ double Exp(int x, int n)
 
 int BinarySearch(int *arr, int elem, int st, int dr)
 {
-    if (st == dr)
-        return arr[st] == elem ? st : -1;
+    if (st > dr)
+        return -1;
+    int mid = (st + dr) / 2;
+
+    if (arr[mid] == elem)
+        return mid;
+    else if (arr[mid] > elem)
+        return BinarySearch(arr, elem, st, mid - 1);
     else
-    {
-        int mid = (st + dr) / 2;
-        if (arr[mid] > elem)
-            return BinarySearch(arr, elem, st, mid - 1);
-        else
-            return BinarySearch(arr, elem, mid, dr);
-    }
+        return BinarySearch(arr, elem, mid + 1, dr);
 }
 
 /*
