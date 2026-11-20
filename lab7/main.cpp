@@ -1,11 +1,7 @@
 #include <iostream>
+#include "LinkedList.hpp"
+#include "stack.hpp"
 
-template <typename T>
-struct Node
-{
-    T data = T{};
-    Node *next = nullptr;
-};
 template <typename T>
 Node<T> *InsertRecursiv(Node<T> *&cap, int x)
 {
@@ -79,15 +75,22 @@ double Exp(int x, int n)
 
 int BinarySearch(int *arr, int elem, int st, int dr)
 {
+    if (st > dr)
+        return -1;
     if (st == dr)
-        return arr[st] == elem ? st : -1;
+        if (arr[st] == elem)
+            return st;
+        else
+            return -1;
     else
     {
         int mid = (st + dr) / 2;
-        if (arr[mid] > elem)
+        if (arr[mid] == elem)
+            return mid;
+        else if (arr[mid] >= elem)
             return BinarySearch(arr, elem, st, mid - 1);
         else
-            return BinarySearch(arr, elem, mid, dr);
+            return BinarySearch(arr, elem, mid + 1, dr);
     }
 }
 
@@ -112,20 +115,31 @@ Implementare optimizata cu un array
 //     }
 // }
 
-int main()
+bool IsPrime(int x, int d = 2)
 {
-    // Node<int> *cap = nullptr;
-    // cap = InsertRecursiv(cap, 2);
-    // cap = InsertRecursiv(cap, 3);
-    // cap = InsertRecursiv(cap, 5);
-    // DisplayBothWays(cap);
-    // DeleteList(cap);
-
-    // std::cout << Exp(5, 50) << "\n";
-    // std::cout << Fibonacci(21) << "\n";
-
-    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 11};
-    std::cout << BinarySearch(arr, 2, 0, sizeof(arr) / sizeof(int) - 1) << "\n";
-
-    return 0;
+    if (x % d == 0 && d <= x / 2)
+        return false;
+    if (d > x / 2)
+        return true;
+    return IsPrime(x, d + 1);
 }
+
+// int main()
+// {
+//     // Node<int> *cap = nullptr;
+//     // cap = InsertRecursiv(cap, 2);
+//     // cap = InsertRecursiv(cap, 3);
+//     // cap = InsertRecursiv(cap, 5);
+//     // DisplayBothWays(cap);
+//     // DeleteList(cap);
+
+//     // std::cout << Exp(5, 50) << "\n";
+//     // std::cout << Fibonacci(21) << "\n";
+
+//     // int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 11};
+//     // std::cout << BinarySearch(arr, 2, 0, sizeof(arr) / sizeof(int) - 1) << "\n\n";
+
+//     // std::cout << IsPrime(17) << "\n";
+
+//     return 0;
+// }
