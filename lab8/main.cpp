@@ -46,6 +46,7 @@ int main()
     }
     for (int i = 0; i < M; i++)
     {
+        std::cout << i << ": ";
         ShowList(HT[i]);
     }
 
