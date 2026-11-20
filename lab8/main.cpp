@@ -46,7 +46,7 @@ int main()
     }
     for (int i = 0; i < M; i++)
     {
-
+        ShowList(HT[i]);
     }
 
     return 0;

@@ -50,7 +50,12 @@ void push_back(List &l, Node *p)
 void ShowList(List &l)
 {
     Node *p = l.first;
-    
+    while (p)
+    {
+        std::cout << p->value << " ";
+        p = p->next;
+    }
+    std::cout << "\n";
 }
 
 void Add(List HT[], const int &M, const std::string &x)
