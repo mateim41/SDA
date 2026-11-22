@@ -26,15 +26,15 @@ int transf_ascii(const std::string &cuv)
     return sum;
 }
 
-int HF_modular(const std::string &cuv, const int &M)
+int hf_modular(const std::string &key, const int &M)
 {
-    int k = transf_ascii(cuv);
+    int k = transf_ascii(key);
     return k % M;
 }
 
-int HF_inmultire(const std::string &cuv, const int &M)
+int hf_inmultire(const std::string &key, const int &M)
 {
-    int k = transf_ascii(cuv);
+    int k = transf_ascii(key);
     double A = 0.618034;
     double kA_fract = k * A - floor(k * A);
     return floor(M * kA_fract);
@@ -57,16 +57,14 @@ void push_back(List &l, Node *&p)
 void Remove(List &l, const std::string &key)
 {
     Node *p = l.first;
-    while (p)
+    Node *q = p->next;
+    while (q->key != key)
     {
-        if (p->next->key == key)
-        {
-            p->next = p->next->next;
-            delete p->next;
-            break;
-        }
         p = p->next;
+        q = q->next;
     }
+    p->next=q->next;
+    delete q;
 }
 
 void DisplayList(const List &l)
@@ -80,7 +78,7 @@ void DisplayList(const List &l)
     std::cout << "\n";
 }
 
-void Display_HT(List HT[], const int &M)
+void DisplayHT(List HT[], const int &M)
 {
     for (int i = 0; i < M; i++)
         DisplayList(HT[i]);
@@ -97,12 +95,13 @@ void DeleteList(List &l)
     }
 }
 
-bool Search(List HT[], const int &idx, const std::string &cuv)
+bool Search(List HT[], const int &M, const std::string &key)
 {
+    int idx = hf_modular(key, M);
     Node *q = HT[idx].first; // parcurg lista ca sa vad daca am deja un entry
     while (q)
     {
-        if (q->key == cuv)
+        if (q->key == key)
         {
             return true;
         }
@@ -111,14 +110,14 @@ bool Search(List HT[], const int &idx, const std::string &cuv)
     return false;
 }
 
-void Add_HT(List HT[], const int &M, const std::string &cuv)
+void AddHT(List HT[], const int &M, const std::string &key)
 {
-    int idx = HF_modular(cuv, M);
+    int idx = hf_modular(key, M);
     Node *p = new Node;
-    p->key = cuv;
+    p->key = key;
     p->value = 1;
 
-    if (!Search(HT, idx, cuv))
+    if (!Search(HT, M, key))
         push_back(HT[idx], p);
     // else
     //      prelucrare
@@ -126,14 +125,14 @@ void Add_HT(List HT[], const int &M, const std::string &cuv)
 
 void DeleteEntry(List HT[], const int &M, const std::string &entry)
 {
-    int idx = HF_modular(entry, M);
-    if (Search(HT, idx, entry))
+    int idx = hf_modular(entry, M);
+    if (Search(HT, M, entry))
         Remove(HT[idx], entry);
     else
         std::cout << "Nu exista cheia data\n";
 }
 
-void delete_ht(List HT[], const int &M)
+void DeleteHT(List HT[], const int &M)
 {
     for (int i = 0; i < M; i++)
     {

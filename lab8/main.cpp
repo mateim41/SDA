@@ -39,24 +39,24 @@ int main()
     int N = 87;
     int M; // trb sa caut M cat mai aproape de N ai alfa sa dea in jur de 1
            // M - prim
-           // factorul de incarcare
-           // ne arata cam cate elemente ar reveni pe fiecare index
-           // alfa = N / M
-           // unde N - nr de elemente pe care vrem sa le introducem
-           //      M - nr de elemente al tabelei de dispersie
     M = ClosestPrime(N);
-    double alfa = (double)N / M;
+    // double alfa = (double)N / M; 0.5 < alfa < 2
+    // factorul de incarcare
+    // ne arata cam cate elemente ar reveni pe fiecare index
+    // alfa = N / M
+    // unde N - nr de elemente pe care vrem sa le introducem
+    //      M - nr de elemente al tabelei de dispersie
 
     List HT[M];
     std::fstream file("dictionar_termeni_PC.txt");
     std::string cuv;
     while (file >> cuv)
     {
-        Add_HT(HT, M, cuv);
+        AddHT(HT, M, cuv);
     }
-    DeleteEntry(HT, M, "masina");
-    Display_HT(HT, M);
+    DeleteEntry(HT, M, "script");
+    DisplayHT(HT, M);
 
-    delete_ht(HT, M);
+    DeleteHT(HT, M);
     return 0;
 }
