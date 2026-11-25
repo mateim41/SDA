@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <fstream>
 #include "hashmap.hpp"
 
@@ -48,14 +49,18 @@ int main()
     //      M - nr de elemente al tabelei de dispersie
 
     List HT[M];
-    std::fstream file("dictionar_termeni_PC.txt");
+    std::fstream file("text.txt");
     std::string cuv;
     while (file >> cuv)
     {
-        AddHT(HT, M, cuv);
+        if (!strchr(" \n,.;./'", cuv[0]) && !cuv.empty())
+            AddHT(HT, M, cuv);
     }
     DeleteEntry(HT, M, "script");
     DisplayHT(HT, M);
+    std::cout << "\n"
+              << grad_clusterizare(HT, N, M) << "\n";
+    // un grad de clusterizare > 1 indica faptul ca hash table este afectat de clusterizare
 
     DeleteHT(HT, M);
     return 0;
