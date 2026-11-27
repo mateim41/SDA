@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-#include "BinaryTree.hpp"
+#include "binary_tree.hpp"
 
 static char car = 0;
 
@@ -33,9 +33,22 @@ static char citesteNume()
 	return c;
 }
 
-static Node<char> *citesteArbore()
+// static int citesteNume(int _)
+// {
+// 	int c;
+// 	if (strchr("0123456789", car))
+// 	{
+// 		c = car - '0';
+// 	}
+// 	else
+// 		eroare();
+// 	car = readchar();
+// 	return c;
+// }
+
+static Node *citesteArbore()
 {
-	Node<char> *rad;
+	Node *rad;
 	if (car == '-')
 	{
 		rad = 0;
@@ -43,7 +56,7 @@ static Node<char> *citesteArbore()
 	}
 	else
 	{
-		rad = new Node<char>;
+		rad = new Node;
 		rad->data = citesteNume();
 		if (car != '(')
 		{
@@ -71,10 +84,58 @@ static Node<char> *citesteArbore()
 	return rad;
 }
 
-Node<char> *creareArbore()
+Node *creareArbore()
 {
 	printf("Exemplu: A(B(-,C),D(E(F,-),G(H,-)))\n");
 	printf("Introduceti arborele:");
 	car = readchar();
 	return citesteArbore();
 }
+
+// pt int-uri
+
+// static Node<int> *citesteArbore(int _)
+// {
+// 	Node<int> *rad;
+// 	if (car == '-')
+// 	{
+// 		rad = 0;
+// 		car = readchar();
+// 	}
+// 	else
+// 	{
+// 		rad = new Node<int>;
+// 		rad->data = citesteNume(_);
+// 		if (car != '(')
+// 		{
+// 			rad->st = nullptr;
+// 			rad->dr = nullptr;
+// 		}
+// 		else
+// 		{
+// 			car = readchar();
+// 			rad->st = citesteArbore(_);
+// 			if (car != ',')
+// 			{
+// 				rad->dr = nullptr;
+// 			}
+// 			else
+// 			{
+// 				car = readchar();
+// 				rad->dr = citesteArbore(_);
+// 			}
+// 			if (car != ')')
+// 				eroare();
+// 			car = readchar();
+// 		}
+// 	}
+// 	return rad;
+// }
+
+// Node<int> *creareArbore(int _)
+// {
+// 	printf("Exemplu: A(B(-,C),D(E(F,-),G(H,-)))\n");
+// 	printf("Introduceti arborele:");
+// 	car = readchar();
+// 	return citesteArbore(_);
+// }

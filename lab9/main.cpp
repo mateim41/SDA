@@ -1,5 +1,5 @@
 #include <iostream>
-#include "BinaryTree.hpp"
+#include "binary_tree.hpp"
 
 int main()
 {
@@ -52,12 +52,32 @@ int main()
 
     // std::cout << Depth(rad) << "\n";
     // DeleteArbore(rad);
-    Arbore<char> *r = creareArbore();
+
+    // Arbore<char> *r = creareArbore();
+    // SRD(r);
+    // std::cout << "\n";
+    // SDR(r);
+    // std::cout << "\n";
+    // std::cout << Depth(r) << "\n"
+    //           << NrFrunze(r) << "\n"
+    //           << NrNoduri(r) << "\n";
+    // DeleteArbore(r);
+
+    // int _ = 0;
+    // Arbore<int> *r = creareArbore(_);
+
+    // Arbore<char> *r = creareArbore();
+    // RSD(r);
+    // H(A(C, F), B(A, J(F, U(C, K(M, E)))))
+
+    Arbore *r = creareArbore();
     RSD(r);
     std::cout << "\n";
-    std::cout << Depth(r) << "\n"
-              << NrFrunze(r) << "\n"
-              << NrNoduri(r) << "\n";
+    SRD(r);
+    std::cout << "\n"
+              << Depth(r) << "\n"
+              << NrNoduri(r) << "\n"
+              << NrFrunze(r) << "\n";
 
     DeleteArbore(r);
     return 0;
