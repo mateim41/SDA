@@ -46,25 +46,35 @@ void SDR(const Arbore<T> *r) // postordine
 }
 
 template <typename T>
-int Depth(Arbore<T> *&r)
+int Depth(Arbore<T> *&r) // nr niveluri
 {
     if (!r)
-    {
         return 0;
-    }
-    int depth_st = 1 + Depth(r->st);
-    int depth_dr = 1 + Depth(r->dr);
-    return std::max(depth_st, depth_dr);
+    return 1 + std::max(Depth(r->st), Depth(r->dr));
+}
+
+template <typename T>
+int NrNoduri(Arbore<T> *&r)
+{
+    if (!r)
+        return 0;
+    return 1 + NrNoduri(r->st) + NrNoduri(r->dr);
 }
 
 template <typename T>
 int NrFrunze(Arbore<T> *r)
 {
-    if (!r->st && !r->dr)
-        return 1;
-    int nrFrunze_st = NrFrunze(r->st);
-    int nrFunze_dr = NrFrunze(r->dr);
+    if (r)
+    {
+        if (!r->st && !r->dr)
+            return 1;
+    }
+    else
+        return 0;
+    return NrFrunze(r->st) + NrFrunze(r->dr);
 }
+
+Arbore<char> *creareArbore();
 
 template <typename T>
 void Insert(Arbore<T> *&r, const T &x, bool insertLeft = true) // A shaped tree
@@ -109,32 +119,6 @@ void Insert(Arbore<T> *&r, const T &x, bool insertLeft = true) // A shaped tree
             p->data = x;
             r->dr = p;
             return;
-        }
-    }
-}
-
-template <typename T>
-void Insert_Perfect(Arbore<T> *&r, const T &x)
-{
-    static int k = 0;
-    if (!r)
-    {
-        Node<T> *p = new Node<T>;
-        p->data = x;
-        r = p;
-        return;
-    }
-    else if (!r->st || !r->dr)
-    {
-        if (k == 0)
-        {
-            Insert_Perfect(r->st, x);
-            k++;
-        }
-        else
-        {
-            Insert_Perfect(r->dr, x);
-            k--;
         }
     }
 }
